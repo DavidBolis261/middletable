@@ -229,6 +229,7 @@ MonoBehaviour:
   duration: 0.25
   maxDistance: 1
   canPush: 1
+  otherPlayer: {fileID: 1622537725}
 --- !u!65 &128274999
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -240,7 +241,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.975, y: 0.975, z: 0.2}
+  m_Size: {x: 0.975, y: 0.975, z: 9999}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &128275000
 Rigidbody:
@@ -257,7 +258,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!1 &453788851
 GameObject:
   m_ObjectHideFlags: 0
@@ -613,6 +614,7 @@ MonoBehaviour:
   duration: 0.25
   maxDistance: 2
   canPush: 0
+  otherPlayer: {fileID: 128274993}
 --- !u!65 &1622537731
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -624,7 +626,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.975, y: 0.975, z: 0.2}
+  m_Size: {x: 0.975, y: 0.975, z: 9999}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &1622537732
 Rigidbody:
@@ -641,4 +643,4 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 126
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3

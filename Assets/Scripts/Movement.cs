@@ -13,6 +13,13 @@ public class Movement : MonoBehaviour
     public int maxDistance = 2;
     public bool canPush = false;
 
+    public GameObject otherPlayer;   // Other player's transform so that only one character can move at a time (god unity is pain)
+
+    private Vector2 previousPosition;
+    // To avoid collision issues
+    private float moveCoolDown = 0.25f;
+    private float moveTimer = 0.0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,14 +30,15 @@ public class Movement : MonoBehaviour
     void Update()
     {
         Move();
+        moveTimer += Time.deltaTime;
     }
 
     void Move()
     {
-        Vector3 previousPosition = transform.position;
-        if(!DOTween.IsTweening(transform))
+        previousPosition = transform.position;
+        if(!DOTween.IsTweening(transform) && !DOTween.IsTweening(otherPlayer.transform) && moveTimer >= moveCoolDown && otherPlayer.GetComponent<Movement>().moveTimer >= otherPlayer.GetComponent<Movement>().moveCoolDown)
         {
-                if (Input.GetKeyDown(upKey))
+            if (Input.GetKeyDown(upKey))
             {   // Up movement
                MoveHelper(Vector2.up);
             }
@@ -51,18 +59,37 @@ public class Movement : MonoBehaviour
 
     void MoveHelper(Vector2 direction)
     {
-        Vector2 previousPosition = transform.position;
-        int moveDistance = maxDistance;
-        
         transform.DOMove((previousPosition + (direction * maxDistance)), duration, false).SetEase(Ease.OutSine);
+        moveTimer = 0.0f;
     }
 
     void OnCollisionEnter(Collision collision) 
     {
         Debug.Log("Collision Enter");
-        transform.DOPause();
-        transform.position = new Vector2(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y));
-        transform.DOKill(false);
+        if(DOTween.IsTweening(transform) && !DOTween.IsTweening(otherPlayer.transform))
+        {
+            transform.DOPause();
+            Vector2 positionSnapping = transform.position;
+            if(transform.position.x < previousPosition.x)
+            {
+                positionSnapping.x = Mathf.Ceil(transform.position.x);
+            }
+            else if(transform.position.x > previousPosition.x)
+            {
+                positionSnapping.x = Mathf.Floor(transform.position.x);
+            }
+
+            if(transform.position.y < previousPosition.y)
+            {
+                positionSnapping.y = Mathf.Ceil(transform.position.y);
+            }
+            else if(transform.position.y > previousPosition.y)
+            {
+                positionSnapping.y = Mathf.Floor(transform.position.y);
+            }
+            transform.position = positionSnapping;
+            transform.DOKill(false);
+        }
     }
 
     
