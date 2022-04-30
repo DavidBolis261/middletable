@@ -5,12 +5,13 @@ using DG.Tweening;
 
 public class Movement : MonoBehaviour
 {
-    public KeyCode upKey;
-    public KeyCode downKey;
-    public KeyCode leftKey;
-    public KeyCode rightKey;
-    public float duration ;
-    public int moveDistance;
+    public KeyCode upKey = KeyCode.UpArrow;
+    public KeyCode downKey = KeyCode.DownArrow;
+    public KeyCode leftKey = KeyCode.LeftArrow;
+    public KeyCode rightKey = KeyCode.RightArrow;
+    public float duration = 0.25f;
+    public int moveDistance = 2;
+    public bool canPush = false;
 
     // Start is called before the first frame update
     void Start()
@@ -31,20 +32,27 @@ public class Movement : MonoBehaviour
         {
                 if (Input.GetKeyDown(upKey))
             {   // Up movement
-                transform.DOMoveY((previousPosition.y + moveDistance), duration, false).SetEase(Ease.OutSine);
+               MoveHelper(Vector2.up);
             }
             else if (Input.GetKeyDown(downKey))
             {   // Down movement
-                transform.DOMoveY((previousPosition.y - moveDistance), duration, false).SetEase(Ease.OutSine);
+                MoveHelper(Vector2.down);
             }
             else if (Input.GetKeyDown(leftKey))
             {   // Left movement
-                transform.DOMoveX(previousPosition.x - moveDistance, duration, false).SetEase(Ease.OutSine);
+                MoveHelper(Vector2.left);
             }
             else if (Input.GetKeyDown(rightKey))
             {   // Right movement
-                transform.DOMoveX(previousPosition.x + moveDistance, duration, false).SetEase(Ease.OutSine);
+                MoveHelper(Vector2.right);
             }
         }
     }
+
+    void MoveHelper(Vector2 direction) {
+        Vector2 previousPosition = transform.position;
+        transform.DOMove((previousPosition + (direction * moveDistance)), duration, false).SetEase(Ease.OutSine);
+    }
+
+    
 }
