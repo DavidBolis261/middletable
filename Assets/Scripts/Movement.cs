@@ -10,7 +10,7 @@ public class Movement : MonoBehaviour
     public KeyCode leftKey = KeyCode.LeftArrow;
     public KeyCode rightKey = KeyCode.RightArrow;
     public float duration = 0.25f;
-    public int moveDistance = 2;
+    public int maxDistance = 2;
     public bool canPush = false;
 
     // Start is called before the first frame update
@@ -49,9 +49,20 @@ public class Movement : MonoBehaviour
         }
     }
 
-    void MoveHelper(Vector2 direction) {
+    void MoveHelper(Vector2 direction)
+    {
         Vector2 previousPosition = transform.position;
-        transform.DOMove((previousPosition + (direction * moveDistance)), duration, false).SetEase(Ease.OutSine);
+        int moveDistance = maxDistance;
+        
+        transform.DOMove((previousPosition + (direction * maxDistance)), duration, false).SetEase(Ease.OutSine);
+    }
+
+    void OnCollisionEnter(Collision collision) 
+    {
+        Debug.Log("Collision Enter");
+        transform.DOPause();
+        transform.position = new Vector2(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y));
+        transform.DOKill(false);
     }
 
     
