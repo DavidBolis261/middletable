@@ -66,29 +66,67 @@ public class Movement : MonoBehaviour
     void OnCollisionEnter(Collision collision) 
     {
         Debug.Log("Collision Enter");
+        // On collision
         if(DOTween.IsTweening(transform) && !DOTween.IsTweening(otherPlayer.transform))
         {
-            transform.DOPause();
             Vector2 positionSnapping = transform.position;
-            if(transform.position.x < previousPosition.x)
+            bool blockDoesntMove = true;
+            // Collision on blocks and can push
+            if(canPush && collision.gameObject.tag == "Block")
             {
-                positionSnapping.x = Mathf.Ceil(transform.position.x);
-            }
-            else if(transform.position.x > previousPosition.x)
-            {
-                positionSnapping.x = Mathf.Floor(transform.position.x);
-            }
+                Debug.Log("Block");
+                GameObject blockGO = collision.gameObject;
+                if(!DOTween.IsTweening(blockGO.transform))
+                {
+                    Block b = blockGO.GetComponent<Block>();
+                    if(b == null) return; 
+                    if(transform.position.x < previousPosition.x && !Physics.Raycast(blockGO.transform.position, Vector3.left, 1.0f))
+                    {
+                        b.Move(Vector3.left);
+                        blockDoesntMove = false;
+                    }
+                    else if(transform.position.x > previousPosition.x && !Physics.Raycast(blockGO.transform.position, Vector3.right, 1.0f))
+                    {
+                        b.Move(Vector3.right);
+                        blockDoesntMove = false;
+                    }
 
-            if(transform.position.y < previousPosition.y)
-            {
-                positionSnapping.y = Mathf.Ceil(transform.position.y);
+                    if(transform.position.y < previousPosition.y && !Physics.Raycast(blockGO.transform.position, Vector3.down, 1.0f))
+                    {
+                        b.Move(Vector3.down);
+                        blockDoesntMove = false;
+                    }
+                    else if(transform.position.y > previousPosition.y && !Physics.Raycast(blockGO.transform.position, Vector3.up, 1.0f))
+                    {
+                        b.Move(Vector3.up);
+                        blockDoesntMove = false;
+                    }
+                }
             }
-            else if(transform.position.y > previousPosition.y)
+            // Everything else
+            if (blockDoesntMove)
             {
-                positionSnapping.y = Mathf.Floor(transform.position.y);
+                transform.DOPause();
+                if(transform.position.x < previousPosition.x)
+                {
+                    positionSnapping.x = Mathf.Ceil(transform.position.x);
+                }
+                else if(transform.position.x > previousPosition.x)
+                {
+                    positionSnapping.x = Mathf.Floor(transform.position.x);
+                }
+
+                if(transform.position.y < previousPosition.y)
+                {
+                    positionSnapping.y = Mathf.Ceil(transform.position.y);
+                }
+                else if(transform.position.y > previousPosition.y)
+                {
+                    positionSnapping.y = Mathf.Floor(transform.position.y);
+                }
+                transform.position = positionSnapping;
+                transform.DOKill(false);
             }
-            transform.position = positionSnapping;
-            transform.DOKill(false);
         }
     }
 
