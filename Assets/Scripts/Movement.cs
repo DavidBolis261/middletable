@@ -80,26 +80,22 @@ public class Movement : MonoBehaviour
                 {
                     Block b = blockGO.GetComponent<Block>();
                     if(b == null) return; 
-                    if(transform.position.x < previousPosition.x && !Physics.Raycast(blockGO.transform.position, Vector3.left, 1.0f))
+                    if(transform.position.x < previousPosition.x)
                     {
-                        b.Move(Vector3.left);
-                        blockDoesntMove = false;
+                        blockDoesntMove = b.Move(Vector3.left);
                     }
-                    else if(transform.position.x > previousPosition.x && !Physics.Raycast(blockGO.transform.position, Vector3.right, 1.0f))
+                    else if(transform.position.x > previousPosition.x)
                     {
-                        b.Move(Vector3.right);
-                        blockDoesntMove = false;
+                        blockDoesntMove = b.Move(Vector3.right);
                     }
 
-                    if(transform.position.y < previousPosition.y && !Physics.Raycast(blockGO.transform.position, Vector3.down, 1.0f))
+                    if(transform.position.y < previousPosition.y)
                     {
-                        b.Move(Vector3.down);
-                        blockDoesntMove = false;
+                        blockDoesntMove = b.Move(Vector3.down);
                     }
-                    else if(transform.position.y > previousPosition.y && !Physics.Raycast(blockGO.transform.position, Vector3.up, 1.0f))
+                    else if(transform.position.y > previousPosition.y)
                     {
-                        b.Move(Vector3.up);
-                        blockDoesntMove = false;
+                        blockDoesntMove = b.Move(Vector3.up);
                     }
                 }
             }

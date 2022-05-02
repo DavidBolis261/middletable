@@ -19,9 +19,17 @@ public class Block : MonoBehaviour
         
     }
 
-    public void Move(Vector3 direction)
+    public bool Move(Vector3 direction)
     {
-        previousPosition = transform.position;
-        transform.DOMove(transform.position + direction, duration, false);
+        RaycastHit hit;
+        Physics.Raycast(transform.position, direction, out hit, 1.0f);
+        // Hits nothing
+        if(hit.collider == null || hit.collider.isTrigger)
+        {
+            previousPosition = transform.position;
+            transform.DOMove(transform.position + direction, duration, false);
+            return false;
+        }
+        return true;
     }
 }
