@@ -69,59 +69,62 @@ public class Movement : MonoBehaviour
         // On collision
         if(DOTween.IsTweening(transform) && !DOTween.IsTweening(otherPlayer.transform))
         {
-            Vector2 positionSnapping = transform.position;
-            bool blockDoesntMove = true;
-            // Collision on blocks and can push
-            if(canPush && collision.gameObject.tag == "Block")
+            if(!((canPush && collision.gameObject.tag == "Strength Only Access") || (!canPush && collision.gameObject.tag == "Speed Only Access")))
             {
-                Debug.Log("Block");
-                GameObject blockGO = collision.gameObject;
-                if(!DOTween.IsTweening(blockGO.transform))
+                Vector2 positionSnapping = transform.position;
+                bool blockDoesntMove = true;
+                // Collision on blocks and can push
+                if(canPush && collision.gameObject.tag == "Block")
                 {
-                    Block b = blockGO.GetComponent<Block>();
-                    if(b == null) return; 
+                    Debug.Log("Block");
+                    GameObject blockGO = collision.gameObject;
+                    if(!DOTween.IsTweening(blockGO.transform))
+                    {
+                        Block b = blockGO.GetComponent<Block>();
+                        if(b == null) return; 
+                        if(transform.position.x < previousPosition.x)
+                        {
+                            blockDoesntMove = b.Move(Vector3.left);
+                        }
+                        else if(transform.position.x > previousPosition.x)
+                        {
+                            blockDoesntMove = b.Move(Vector3.right);
+                        }
+
+                        if(transform.position.y < previousPosition.y)
+                        {
+                            blockDoesntMove = b.Move(Vector3.down);
+                        }
+                        else if(transform.position.y > previousPosition.y)
+                        {
+                            blockDoesntMove = b.Move(Vector3.up);
+                        }
+                    }
+                }
+                // Everything else
+                if (blockDoesntMove)
+                {
+                    transform.DOPause();
                     if(transform.position.x < previousPosition.x)
                     {
-                        blockDoesntMove = b.Move(Vector3.left);
+                        positionSnapping.x = Mathf.Ceil(transform.position.x);
                     }
                     else if(transform.position.x > previousPosition.x)
                     {
-                        blockDoesntMove = b.Move(Vector3.right);
+                        positionSnapping.x = Mathf.Floor(transform.position.x);
                     }
 
                     if(transform.position.y < previousPosition.y)
                     {
-                        blockDoesntMove = b.Move(Vector3.down);
+                        positionSnapping.y = Mathf.Ceil(transform.position.y);
                     }
                     else if(transform.position.y > previousPosition.y)
                     {
-                        blockDoesntMove = b.Move(Vector3.up);
+                        positionSnapping.y = Mathf.Floor(transform.position.y);
                     }
+                    transform.position = positionSnapping;
+                    transform.DOKill(false);
                 }
-            }
-            // Everything else
-            if (blockDoesntMove)
-            {
-                transform.DOPause();
-                if(transform.position.x < previousPosition.x)
-                {
-                    positionSnapping.x = Mathf.Ceil(transform.position.x);
-                }
-                else if(transform.position.x > previousPosition.x)
-                {
-                    positionSnapping.x = Mathf.Floor(transform.position.x);
-                }
-
-                if(transform.position.y < previousPosition.y)
-                {
-                    positionSnapping.y = Mathf.Ceil(transform.position.y);
-                }
-                else if(transform.position.y > previousPosition.y)
-                {
-                    positionSnapping.y = Mathf.Floor(transform.position.y);
-                }
-                transform.position = positionSnapping;
-                transform.DOKill(false);
             }
         }
     }

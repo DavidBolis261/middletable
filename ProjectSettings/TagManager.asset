@@ -7,6 +7,8 @@ TagManager:
   - Block
   - Triggers
   - Required Item
+  - Strength Only Access
+  - Speed Only Access
   layers:
   - Default
   - TransparentFX
