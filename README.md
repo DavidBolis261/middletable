@@ -8,6 +8,7 @@ Current progress: Working on gameplay - Triggers
 Completed items:
 - [x] Gameplay: Movement
 - [x] Gameplay: Collision
-- [] Gameplay: Triggers
-- [] Gameplay: Objectives
-- [] MORE TO BE ADDED
+- [x] Gameplay: Triggers
+- [x] Gameplay: Objectives
+- [ ] UI
+- [ ] Levels
