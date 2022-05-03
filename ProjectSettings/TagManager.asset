@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Block
   - Triggers
+  - Required Item
   layers:
   - Default
   - TransparentFX

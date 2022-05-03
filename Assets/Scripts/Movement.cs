@@ -18,7 +18,7 @@ public class Movement : MonoBehaviour
     private Vector2 previousPosition;
     // To avoid collision issues
     private float moveCoolDown = 0.25f;
-    private float moveTimer = 0.0f;
+    public float moveTimer = 0.0f;
 
     // Start is called before the first frame update
     void Start()
