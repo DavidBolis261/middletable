@@ -3,4 +3,12 @@
 
 Made in Unity Version 2021.2.17f1
 
-Current progress: Working on gameplay - Collision
+Current progress: Working on gameplay - Triggers
+
+Completed items:
+- [x] Gameplay: Movement
+- [x] Gameplay: Collision
+- [x] Gameplay: Triggers
+- [x] Gameplay: Objectives
+- [ ] UI
+- [ ] Levels

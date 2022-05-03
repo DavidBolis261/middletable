@@ -5,12 +5,20 @@ using DG.Tweening;
 
 public class Movement : MonoBehaviour
 {
-    public KeyCode upKey;
-    public KeyCode downKey;
-    public KeyCode leftKey;
-    public KeyCode rightKey;
-    public float duration ;
-    public int moveDistance;
+    public KeyCode upKey = KeyCode.UpArrow;
+    public KeyCode downKey = KeyCode.DownArrow;
+    public KeyCode leftKey = KeyCode.LeftArrow;
+    public KeyCode rightKey = KeyCode.RightArrow;
+    public float duration = 0.25f;
+    public int maxDistance = 2;
+    public bool canPush = false;
+
+    public GameObject otherPlayer;   // Other player's transform so that only one character can move at a time (god unity is pain)
+
+    private Vector2 previousPosition;
+    // To avoid collision issues
+    private float moveCoolDown = 0.25f;
+    public float moveTimer = 0.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -22,29 +30,101 @@ public class Movement : MonoBehaviour
     void Update()
     {
         Move();
+        moveTimer += Time.deltaTime;
     }
 
     void Move()
     {
-        Vector3 previousPosition = transform.position;
-        if(!DOTween.IsTweening(transform))
+        previousPosition = transform.position;
+        if(!DOTween.IsTweening(transform) && !DOTween.IsTweening(otherPlayer.transform) && moveTimer >= moveCoolDown && otherPlayer.GetComponent<Movement>().moveTimer >= otherPlayer.GetComponent<Movement>().moveCoolDown)
         {
-                if (Input.GetKeyDown(upKey))
+            if (Input.GetKeyDown(upKey))
             {   // Up movement
-                transform.DOMoveY((previousPosition.y + moveDistance), duration, false).SetEase(Ease.OutSine);
+               MoveHelper(Vector2.up);
             }
             else if (Input.GetKeyDown(downKey))
             {   // Down movement
-                transform.DOMoveY((previousPosition.y - moveDistance), duration, false).SetEase(Ease.OutSine);
+                MoveHelper(Vector2.down);
             }
             else if (Input.GetKeyDown(leftKey))
             {   // Left movement
-                transform.DOMoveX(previousPosition.x - moveDistance, duration, false).SetEase(Ease.OutSine);
+                MoveHelper(Vector2.left);
             }
             else if (Input.GetKeyDown(rightKey))
             {   // Right movement
-                transform.DOMoveX(previousPosition.x + moveDistance, duration, false).SetEase(Ease.OutSine);
+                MoveHelper(Vector2.right);
             }
         }
     }
+
+    void MoveHelper(Vector2 direction)
+    {
+        transform.DOMove((previousPosition + (direction * maxDistance)), duration, false).SetEase(Ease.OutSine);
+        moveTimer = 0.0f;
+    }
+
+    void OnCollisionEnter(Collision collision) 
+    {
+        Debug.Log("Collision Enter");
+        // On collision
+        if(DOTween.IsTweening(transform) && !DOTween.IsTweening(otherPlayer.transform))
+        {
+            Vector2 positionSnapping = transform.position;
+            bool blockDoesntMove = true;
+            // Collision on blocks and can push
+            if(canPush && collision.gameObject.tag == "Block")
+            {
+                Debug.Log("Block");
+                GameObject blockGO = collision.gameObject;
+                if(!DOTween.IsTweening(blockGO.transform))
+                {
+                    Block b = blockGO.GetComponent<Block>();
+                    if(b == null) return; 
+                    if(transform.position.x < previousPosition.x)
+                    {
+                        blockDoesntMove = b.Move(Vector3.left);
+                    }
+                    else if(transform.position.x > previousPosition.x)
+                    {
+                        blockDoesntMove = b.Move(Vector3.right);
+                    }
+
+                    if(transform.position.y < previousPosition.y)
+                    {
+                        blockDoesntMove = b.Move(Vector3.down);
+                    }
+                    else if(transform.position.y > previousPosition.y)
+                    {
+                        blockDoesntMove = b.Move(Vector3.up);
+                    }
+                }
+            }
+            // Everything else
+            if (blockDoesntMove)
+            {
+                transform.DOPause();
+                if(transform.position.x < previousPosition.x)
+                {
+                    positionSnapping.x = Mathf.Ceil(transform.position.x);
+                }
+                else if(transform.position.x > previousPosition.x)
+                {
+                    positionSnapping.x = Mathf.Floor(transform.position.x);
+                }
+
+                if(transform.position.y < previousPosition.y)
+                {
+                    positionSnapping.y = Mathf.Ceil(transform.position.y);
+                }
+                else if(transform.position.y > previousPosition.y)
+                {
+                    positionSnapping.y = Mathf.Floor(transform.position.y);
+                }
+                transform.position = positionSnapping;
+                transform.DOKill(false);
+            }
+        }
+    }
+
+    
 }
