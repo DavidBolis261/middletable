@@ -65,7 +65,7 @@ public class Movement : MonoBehaviour
 
     void OnCollisionEnter(Collision collision) 
     {
-        Debug.Log("Collision Enter");
+        //Debug.Log("Collision Enter");
         // On collision
         if(DOTween.IsTweening(transform) && !DOTween.IsTweening(otherPlayer.transform))
         {
@@ -76,7 +76,7 @@ public class Movement : MonoBehaviour
                 // Collision on blocks and can push
                 if(canPush && collision.gameObject.tag == "Block")
                 {
-                    Debug.Log("Block");
+                    //Debug.Log("Block");
                     GameObject blockGO = collision.gameObject;
                     if(!DOTween.IsTweening(blockGO.transform))
                     {
