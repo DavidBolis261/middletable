@@ -48,7 +48,7 @@ public class Exit : MonoBehaviour
         }
         if(allObtained)
         {
-            Debug.Log("Required Items has been obtained");
+            //Debug.Log("Required Items has been obtained");
             bc.enabled = true;
         }
     }

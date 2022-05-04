@@ -9,10 +9,15 @@ public class PressurePlate : MonoBehaviour
 
     [SerializeField]
     private Gate gate;
+    private SpriteRenderer sr;
+    private Color defaultColor;
+
     // Start is called before the first frame update
     void Start()
     {
         gate = transform.parent.gameObject.GetComponent<Gate>();
+        sr = GetComponent<SpriteRenderer>();
+        defaultColor = sr.color;
     }
 
     // Update is called once per frame
@@ -23,9 +28,10 @@ public class PressurePlate : MonoBehaviour
 
     void OnTriggerStay(Collider collider)
     {
-        Debug.Log("Pressure Plate pressed");
         if((collider.gameObject.tag == "Player" || collider.gameObject.tag == "Block") && !isPressed)
         {
+            //Debug.Log("Pressure Plate pressed");
+            sr.color = defaultColor * new Color(0.75f, 0.75f, 0.75f, 1.0f);
             isPressed = true;
             gate.Check();
         }
@@ -35,6 +41,7 @@ public class PressurePlate : MonoBehaviour
     {
         if(keepPressed)
         {
+            sr.color = defaultColor;
             isPressed = false;
             gate.Check();
         }

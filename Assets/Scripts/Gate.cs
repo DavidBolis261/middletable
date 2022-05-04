@@ -42,13 +42,13 @@ public class Gate : MonoBehaviour
         }
         if(allTriggered)
         {
-            Debug.Log("ALL TRIGGERS PRESSED, GATE OPENED");
+            //Debug.Log("ALL TRIGGERS PRESSED, GATE OPENED");
             bc.enabled = false;
             gateSpriteAlpha = 0.0f;
         }
         else
         {
-            Debug.Log("GATE NOT OPENED");
+            //Debug.Log("GATE NOT OPENED");
             bc.enabled = true;
             gateSpriteAlpha = 1.0f;
         }
