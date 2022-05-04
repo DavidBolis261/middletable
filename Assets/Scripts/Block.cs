@@ -23,6 +23,7 @@ public class Block : MonoBehaviour
     {
         RaycastHit hit;
         Physics.Raycast(transform.position, direction, out hit, 1.0f);
+        Debug.Log(hit);
         // Hits nothing
         if(hit.collider == null || hit.collider.isTrigger)
         {

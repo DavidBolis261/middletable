@@ -15,7 +15,6 @@ public class Movement : MonoBehaviour
 
     public GameObject otherPlayer;   // Other player's transform so that only one character can move at a time (god unity is pain)
     private Vector2 previousPosition;
-    private Vector2 positionSnapping;
     // To avoid collision issues
     private float moveCoolDown = 0.25f;
     public float moveTimer = 0.0f;
@@ -23,7 +22,7 @@ public class Movement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        positionSnapping = transform.position;
+        previousPosition = transform.position;
     }
 
     // Update is called once per frame
@@ -65,13 +64,16 @@ public class Movement : MonoBehaviour
 
     void OnCollisionEnter(Collision collision) 
     {
+        Vector3 contact = collision.GetContact(0).point;
+        Debug.Log("Contact point: " + contact);
         //Debug.Log("Collision Enter");
         // On collision
         if(DOTween.IsTweening(transform) && !DOTween.IsTweening(otherPlayer.transform))
         {
+            Debug.Log("Collision detected");
             if(!((canPush && collision.gameObject.tag == "Strength Only Access") || (!canPush && collision.gameObject.tag == "Speed Only Access")))
             {
-                
+                Debug.Log("Collision detected confirmed");
                 bool blockDoesntMove = true;
                 // Collision on blocks and can push
                 if(canPush && collision.gameObject.tag == "Block")
@@ -82,54 +84,52 @@ public class Movement : MonoBehaviour
                     {
                         Block b = blockGO.GetComponent<Block>();
                         if(b == null) return; 
-                        if(transform.position.x < previousPosition.x)
+                        if(transform.position.x > contact.x && b.transform.position.x < transform.position.x)
                         {
                             blockDoesntMove = b.Move(Vector3.left);
                         }
-                        else if(transform.position.x > previousPosition.x)
+                        else if(transform.position.x < contact.x && b.transform.position.x > transform.position.x)
                         {
                             blockDoesntMove = b.Move(Vector3.right);
                         }
 
-                        if(transform.position.y < previousPosition.y)
+                        if(transform.position.y > contact.y && b.transform.position.y < transform.position.y)
                         {
                             blockDoesntMove = b.Move(Vector3.down);
                         }
-                        else if(transform.position.y > previousPosition.y)
+                        else if(transform.position.y < contact.y && b.transform.position.y > transform.position.y)
                         {
                             blockDoesntMove = b.Move(Vector3.up);
                         }
+                        Debug.Log("B" + blockDoesntMove);
                     }
                 }
                 // Everything else
                 if (blockDoesntMove)
                 {
-                    positionSnapping = transform.position;
                     transform.DOPause();
-                    transform.DOKill(false);
-                    if(transform.position.x < previousPosition.x)
+                    Vector2 positionSnapping = transform.position;
+                    Debug.Log("PrevPos " + previousPosition.x + " " + previousPosition.y);
+                    Debug.Log("Snapping " + positionSnapping.x + " " + positionSnapping.y);
+                    if(transform.position.x > contact.x)
                     {
-                        Debug.Log("Snapped");
                         positionSnapping.x = Mathf.Ceil(transform.position.x);
                     }
-                    else if(transform.position.x > previousPosition.x)
+                    else if(transform.position.x < contact.x)
                     {
-                        Debug.Log("Snapped");
                         positionSnapping.x = Mathf.Floor(transform.position.x);
                     }
 
-                    if(transform.position.y < previousPosition.y)
+                    if(transform.position.y > contact.y)
                     {
-                        Debug.Log("Snapped");
                         positionSnapping.y = Mathf.Ceil(transform.position.y);
                     }
-                    else if(transform.position.y > previousPosition.y)
+                    else if(transform.position.y < contact.y)
                     {
-                        Debug.Log("Snapped");
                         positionSnapping.y = Mathf.Floor(transform.position.y);
                     }
                     transform.position = positionSnapping;
-                    
+                    transform.DOKill(false);
                 }
             }
         }
