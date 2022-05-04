@@ -48,7 +48,7 @@ public class Exit : MonoBehaviour
         }
         if(allObtained)
         {
-            Debug.Log("Required Items has been obtained");
+            //Debug.Log("Required Items has been obtained");
             bc.enabled = true;
         }
     }
@@ -60,12 +60,13 @@ public class Exit : MonoBehaviour
             Debug.Log("Player has exited");
             players.Remove(collider.gameObject);
             collider.transform.DOPause();
-            collider.transform.DOKill(false);
+            collider.transform.DOKill(true);
             collider.gameObject.GetComponent<Movement>().moveTimer = 999.0f;
             collider.gameObject.SetActive(false);
             if(players.Count == 0)
             {
                 Debug.Log("Level Completed");
+                StatusManager.instance.LevelCompleted();
             }
         }
     }
