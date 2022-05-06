@@ -104,6 +104,7 @@ MonoBehaviour:
   leftKey: 97
   rightKey: 100
   duration: 0.25
+  moveTimer: 0
   maxDistance: 1
   canPush: 1
   otherPlayer: {fileID: 0}
@@ -117,12 +118,12 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 126
-  m_CollisionDetection: 3
+  m_CollisionDetection: 2
 --- !u!65 &920186713755166023
 BoxCollider:
   m_ObjectHideFlags: 0
