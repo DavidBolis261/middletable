@@ -53,14 +53,12 @@ public class Exit : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider collider)
+    void OnTriggerStay(Collider collider)
     {
-        if(collider.gameObject.tag == "Player")
+        if(collider.gameObject.tag == "Player" && !DOTween.IsTweening(collider.transform))
         {
             Debug.Log("Player has exited");
             players.Remove(collider.gameObject);
-            collider.transform.DOPause();
-            collider.transform.DOKill(true);
             collider.gameObject.GetComponent<Movement>().moveTimer = 999.0f;
             collider.gameObject.SetActive(false);
             if(players.Count == 0)
