@@ -17,7 +17,11 @@ public class PressurePlate : MonoBehaviour
     {
         gate = transform.parent.gameObject.GetComponent<Gate>();
         sr = GetComponent<SpriteRenderer>();
-        defaultColor = sr.color;
+        if(keepPressed)
+        {
+            sr.color = sr.color * new Color(1.0f, 0.75f, 0.65f, 1.0f);  
+        }
+            defaultColor = sr.color;
     }
 
     // Update is called once per frame

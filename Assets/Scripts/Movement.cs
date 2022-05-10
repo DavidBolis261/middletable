@@ -53,7 +53,7 @@ public class Movement : MonoBehaviour
     void Move()
     {
         previousPosition = transform.position;
-        if(!DOTween.IsTweening(transform) && !DOTween.IsTweening(otherPlayer.transform) && moveTimer >= duration && otherPlayer.GetComponent<Movement>().moveTimer >= otherPlayer.GetComponent<Movement>().duration)
+        if(!DOTween.IsTweening(transform) && !DOTween.IsTweening(otherPlayer.transform) && moveTimer >= duration + 0.05f && otherPlayer.GetComponent<Movement>().moveTimer >= otherPlayer.GetComponent<Movement>().duration + 0.05f)
         {
             foreach(KeyBind kb in keyBinds)
             {
