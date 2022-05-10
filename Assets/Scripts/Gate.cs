@@ -10,6 +10,7 @@ public class Gate : MonoBehaviour
     private BoxCollider bc;
     private SpriteRenderer sr;
     private float gateSpriteAlpha = 1.0f;
+    private bool attemptedClosure = false;
 
     // Start is called before the first frame update
     void Start()
@@ -24,9 +25,12 @@ public class Gate : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        
+        if(attemptedClosure)
+        {
+            Check();
+        }
     }
 
     public void Check()
@@ -49,8 +53,15 @@ public class Gate : MonoBehaviour
         else
         {
             //Debug.Log("GATE NOT OPENED");
-            bc.enabled = true;
-            gateSpriteAlpha = 1.0f;
+            if(!Physics.CheckSphere(transform.position, 0.45f))
+            {
+                bc.enabled = true;
+                gateSpriteAlpha = 1.0f;
+            }
+            else
+            {
+                attemptedClosure = true;
+            }
         }
         sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, gateSpriteAlpha);
     }
