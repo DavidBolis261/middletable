@@ -22,18 +22,18 @@ public class Teleporter : MonoBehaviour
         
     }
 
-    void OnTriggerStay(Collider collider)
+    void OnTriggerStay2D(Collider2D collider)
     {
         if(collider.gameObject.tag == "Player" && !DOTween.IsTweening(collider.transform))
         {
-            if(!Physics.CheckSphere(teleporterExitPosition, 0.25f) && !attemptedTele)
+            if(!Physics2D.CircleCast(teleporterExitPosition, 0.25f, Vector2.zero) && !attemptedTele)
                 collider.transform.position = teleporterExitPosition;
             else
                 attemptedTele = true;
         }
     }
 
-    void OnTriggerExit(Collider collider)
+    void OnTriggerExit2D(Collider2D collider)
     {
         if(collider.gameObject.tag == "Player")
             attemptedTele = false;

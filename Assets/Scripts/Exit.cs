@@ -9,11 +9,11 @@ public class Exit : MonoBehaviour
     private List<GameObject> requiredItems = new List<GameObject>();
     [SerializeField]
     private List<GameObject> players = new List<GameObject>();
-    private BoxCollider bc;
+    private BoxCollider2D bc;
     // Start is called before the first frame update
     void Start()
     {
-        bc = GetComponent<BoxCollider>();
+        bc = GetComponent<BoxCollider2D>();
         bc.enabled = false;
         for(int i = 0; i < transform.childCount; i++) 
         {
@@ -53,7 +53,7 @@ public class Exit : MonoBehaviour
         }
     }
 
-    void OnTriggerStay(Collider collider)
+    void OnTriggerStay2D(Collider2D collider)
     {
         if(collider.gameObject.tag == "Player" && !DOTween.IsTweening(collider.transform))
         {

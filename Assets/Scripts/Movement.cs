@@ -73,18 +73,19 @@ public class Movement : MonoBehaviour
 
     Vector2 ComputeMoveDistance(Vector2 direction)
     {
-        RaycastHit hit;
         float distanceTraveled = maxDistance;
+        
         while(distanceTraveled > 0.0f)
         {   
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, distanceTraveled);
             // No Collision
-            if(!Physics.Raycast(transform.position, direction, out hit, distanceTraveled))
+            if(hit.collider == null)
             {
                 return direction * distanceTraveled;
             }
             else
             {
-                Debug.Log(hit.distance);
+                Debug.Log(hit.collider);
                 // Collider of target is trigger
                 if(hit.collider == null || hit.collider.isTrigger)
                 {
@@ -106,7 +107,7 @@ public class Movement : MonoBehaviour
                     if(hit.distance > (distanceTraveled - 1))
                         return direction * distanceTraveled;
 
-                    if(!Physics.Raycast(hit.collider.transform.position, direction, hit.distance + 1))
+                    if(!Physics2D.Raycast(hit.collider.transform.position, direction, hit.distance + 1))
                     {
                         return direction * distanceTraveled;
                     }
