@@ -30,7 +30,7 @@ public class PressurePlate : MonoBehaviour
         
     }
 
-    void OnTriggerStay(Collider collider)
+    void OnTriggerStay2D(Collider2D collider)
     {
         if((collider.gameObject.tag == "Player" || collider.gameObject.tag == "Block") && !isPressed)
         {
@@ -41,7 +41,7 @@ public class PressurePlate : MonoBehaviour
         }
     }
 
-    void OnTriggerExit(Collider collider)
+    void OnTriggerExit2D(Collider2D collider)
     {
         if(keepPressed)
         {

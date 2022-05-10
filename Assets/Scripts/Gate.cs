@@ -7,7 +7,7 @@ public class Gate : MonoBehaviour
 {
     [SerializeField]
     private List<PressurePlate> pressurePlates = new List<PressurePlate>();
-    private BoxCollider bc;
+    private BoxCollider2D bc;
     private SpriteRenderer sr;
     private float gateSpriteAlpha = 1.0f;
     private bool attemptedClosure = false;
@@ -15,7 +15,7 @@ public class Gate : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        bc = GetComponent<BoxCollider>();
+        bc = GetComponent<BoxCollider2D>();
         sr = GetComponent<SpriteRenderer>();
         for(int i = 0; i < transform.childCount; i++) 
         {
@@ -53,7 +53,7 @@ public class Gate : MonoBehaviour
         else
         {
             //Debug.Log("GATE NOT OPENED");
-            if(!Physics.CheckSphere(transform.position, 0.45f))
+            if(!Physics2D.CircleCast(transform.position, 0.45f, Vector2.zero))
             {
                 bc.enabled = true;
                 gateSpriteAlpha = 1.0f;

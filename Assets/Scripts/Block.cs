@@ -19,16 +19,17 @@ public class Block : MonoBehaviour
         
     }
 
-    public bool Move(Vector3 direction)
+    public bool Move(Vector2 direction)
     {
-        RaycastHit hit;
-        Physics.Raycast(transform.position, direction, out hit, 1.0f);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, 1.0f);
         Debug.Log(hit);
         // Hits nothing
         if(hit.collider == null || hit.collider.isTrigger)
         {
             previousPosition = transform.position;
-            transform.DOMove(transform.position + direction, duration, false);
+            Vector2 v2Pos = transform.position;
+            Vector2 target = v2Pos + direction;
+            transform.DOMove(target, duration, false);
             return false;
         }
         return true;
