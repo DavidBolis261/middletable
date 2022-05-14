@@ -27,6 +27,7 @@ public class StatusManager : MonoBehaviour
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.R)) Reset();
+        if(Input.GetKeyDown(KeyCode.Escape)) SceneManager.LoadScene("Main Menu");
     }
 
     public void LevelCompleted()
