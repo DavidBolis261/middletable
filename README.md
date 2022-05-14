@@ -10,5 +10,10 @@ Completed items:
 - [x] Gameplay: Collision
 - [x] Gameplay: Triggers
 - [x] Gameplay: Objectives
-- [ ] UI
-- [ ] Levels
+- [x] UI
+- [x] Tutorial Level
+- [ ] Level 1
+- [x] Level 2
+- [x] Level 3
+- [ ] Level 4
+- [x] Level 5
