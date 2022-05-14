@@ -57,7 +57,7 @@ public class Movement : MonoBehaviour
         {
             foreach(KeyBind kb in keyBinds)
             {
-                if(Input.GetKeyDown(kb.Code))
+                if(Input.GetKey(kb.Code))
                 {
                     MoveHelper(kb.Direction);
                 }
