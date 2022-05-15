@@ -85,7 +85,7 @@ public class Movement : MonoBehaviour
             }
             else
             {
-                Debug.Log(hit.collider);
+                //Debug.Log(hit.collider);
                 // Collider of target is trigger
                 if(hit.collider == null || hit.collider.isTrigger)
                 {

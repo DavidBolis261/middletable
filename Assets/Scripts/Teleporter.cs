@@ -7,11 +7,16 @@ public class Teleporter : MonoBehaviour
 {
     private Vector3 teleporterExitPosition;
     private bool attemptedTele = false;
+    private TeleporterExit teleporterExit;
+
     // Start is called before the first frame update
     void Start()
     {
         if(transform.childCount == 1)
+        {
             teleporterExitPosition = transform.GetChild(0).position;
+            teleporterExit = transform.GetChild(0).gameObject.GetComponent<TeleporterExit>();
+        }
         else
             Debug.LogError("Please put Teleporter exit as child :)");
     }
@@ -24,9 +29,9 @@ public class Teleporter : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D collider)
     {
-        if(collider.gameObject.tag == "Player" && !DOTween.IsTweening(collider.transform))
+        if(collider.gameObject.CompareTag("Player") && !DOTween.IsTweening(collider.transform))
         {
-            if(!Physics2D.CircleCast(teleporterExitPosition, 0.25f, Vector2.zero) && !attemptedTele)
+            if( !teleporterExit.objectOnTelep && !attemptedTele)
                 collider.transform.position = teleporterExitPosition;
             else
                 attemptedTele = true;
@@ -35,7 +40,7 @@ public class Teleporter : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D collider)
     {
-        if(collider.gameObject.tag == "Player")
+        if(collider.gameObject.CompareTag("Player"))
             attemptedTele = false;
     }
 }
